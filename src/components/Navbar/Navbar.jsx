@@ -8,7 +8,8 @@ const Navbar = ({ setShowLogin }) => {
 
   const [menu, setMenu] = useState('home');
 
-  const { getTotalCartAmount, token, setToken } = useContext(StoreContext);
+  const { getTotalCartAmount, token, setToken, searchTerm, setSearchTerm } = useContext(StoreContext);
+  const [showSearch, setShowSearch] = useState(false);
 
   const navigate = useNavigate();
 
@@ -28,7 +29,23 @@ const Navbar = ({ setShowLogin }) => {
         <a href='#footer' onClick={() => setMenu('contact-us')} className={menu === 'contact-us' ? 'active' : ''}>contact us</a>
       </ul>
       <div className="navbar-right">
-        <img src={assets.search_icon} alt="" />
+        <img src={assets.search_icon} alt="" onClick={() => setShowSearch(s => !s)} style={{ cursor: 'pointer' }} />
+        {showSearch && (
+          <input
+            className="navbar-search-input"
+            type="text"
+            placeholder="Search dishes..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                setShowSearch(false);
+                navigate('/');
+              }
+            }}
+          />
+        )}
         <div className="navbar-search-icon">
           <Link to='/cart'><img src={assets.basket_icon} alt="" /></Link>
           <div className={getTotalCartAmount() === 0 ? '' : 'dot'}></div>

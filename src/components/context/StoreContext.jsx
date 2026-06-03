@@ -7,6 +7,7 @@ const StoreContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
   const url = import.meta.env.VITE_API_URL;
   const [token, setToken] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   //remove food_list state 
 
@@ -81,6 +82,8 @@ const StoreContextProvider = (props) => {
     url,
     token,
     setToken,
+    searchTerm,
+    setSearchTerm,
   };
 
   return (

@@ -24,9 +24,9 @@ const PlaceOrder = () => {
     const value = event.target.value;
     setData(data => ({ ...data, [name]: value }))
   }
+  const [paymentStep, setPaymentStep] = useState(0) // 0 = initial, 1 = show COD, 2 = confirm place order
 
-  const placeOrder = async (event) => {
-    event.preventDefault();
+  const placeOrder = async () => {
     let orderItems = [];
     food_list.map((item, index) => {
       if (cartItems[item._id] > 0) {
@@ -41,13 +41,19 @@ const PlaceOrder = () => {
       amount: getTotalCartAmount() + 2,
     }
 
-    let response = await axios.post(url + '/api/order/place', orderData, { headers: { token } })
-    if (response.data.success) {
-      const { session_url } = response.data;
-      window.location.replace(session_url);
-    }
-    else {
-      alert('Error')
+    try {
+      let response = await axios.post(url + '/api/order/place', orderData, { headers: { token } })
+
+      if (response.data.success) {
+        // Backend places Cash on Delivery orders and returns orderId
+        alert(response.data.message || 'Order placed successfully')
+        navigate('/myorders')
+      } else {
+        alert(response.data.message || 'Error placing order')
+      }
+    } catch (err) {
+      console.error('Place order error:', err.message || err)
+      alert(err.response?.data?.message || 'Error placing order. Please try again.')
     }
   }
 
@@ -61,8 +67,17 @@ const PlaceOrder = () => {
     }
   }, [token])
 
+  const handleProceed = (e) => {
+    e.preventDefault()
+    setPaymentStep(1)
+  }
+
+  const handleSelectCOD = () => {
+    setPaymentStep(2)
+  }
+
   return (
-    <form onSubmit={placeOrder} className='place-order'>
+    <form onSubmit={(e) => e.preventDefault()} className='place-order'>
       <div className="place-order-left">
         <p className="title">Delivery Information</p>
         <div className="multi-fields">
@@ -100,7 +115,15 @@ const PlaceOrder = () => {
               <b>₹{getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 2}</b>
             </div>
           </div>
-          <button type='submit'>PROCEED TO PAYMENT</button>
+          {paymentStep === 0 && (
+            <button type='button' onClick={handleProceed}>PROCEED TO CHECKOUT</button>
+          )}
+          {paymentStep === 1 && (
+            <button type='button' onClick={handleSelectCOD}>Cash on Delivery</button>
+          )}
+          {paymentStep === 2 && (
+            <button type='button' onClick={placeOrder}>Cash on Delivery</button>
+          )}
         </div>
       </div>
     </form>
