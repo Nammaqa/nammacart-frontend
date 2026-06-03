@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
-import { food_list } from "../../assets/assets";
+// import { food_list } from "../../assets/assets";
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
@@ -8,6 +8,7 @@ const StoreContextProvider = (props) => {
   const url = import.meta.env.VITE_API_URL;
   const [token, setToken] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [food_list, setFoodList] = useState([]);
 
   //remove food_list state 
 
@@ -48,8 +49,13 @@ const StoreContextProvider = (props) => {
     return totalAmount;
   };
 
+
   const fetchFoodList = async () => {
     const response = await axios.get(url + "/api/food/list");
+
+    if (response.data.success) {
+      setFoodList(response.data.data);
+    }
   };
 
   const loadCartData = async (token) => {
