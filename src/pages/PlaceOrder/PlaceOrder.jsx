@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const PlaceOrder = () => {
-  const { getTotalCartAmount, token, food_list, cartItems, url } = useContext(StoreContext);
+  const { getTotalCartAmount, token, food_list, cartItems, url, clearToken } = useContext(StoreContext);
 
   const [data, setData] = useState({
     firstName: "",
@@ -53,7 +53,13 @@ const PlaceOrder = () => {
       }
     } catch (err) {
       console.error('Place order error:', err.message || err)
-      alert(err.response?.data?.message || 'Error placing order. Please try again.')
+      if (err.response?.status === 401) {
+        clearToken();
+        navigate('/');
+        alert('Session expired. Please log in again.');
+      } else {
+        alert(err.response?.data?.message || 'Error placing order. Please try again.')
+      }
     }
   }
 
