@@ -8,7 +8,8 @@ const Footer = () => {
             <div className="footer-content">
                 <div className="footer-content-left">
                     <img src={assets.logo} alt="" width="150px" />
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsum in, beatae dolorem non optio cupiditate, quam sunt dicta dolores minima exercitationem ducimus totam aut asperiores inventore harum laudantium. Distinctio, libero.</p>
+                    <p>    NammaCart brings your favorite meals from trusted restaurants right to your doorstep. Enjoy a seamless food ordering experience with a wide variety of cuisines, fast delivery, and exceptional customer service.
+                    </p>
                     <div className="footer-social-icons">
                         <img src={assets.facebook_icon} alt="" />
                         <img src={assets.twitter_icon} alt="" />
@@ -27,16 +28,15 @@ const Footer = () => {
                 <div className="footer-content-right">
                     <h2>GET IN TOUCH</h2>
                     <ul>
-                        <li>+91 1023456789</li>
-                        <li>info@Nammacafe.com</li>
+                        <li>+91-7676401716</li>
+                        <li>enquiry@nammaqa.com</li>
                     </ul>
                 </div>
 
             </div>
             <hr />
             <p className="footer-copyright">
-                Copyright 2024 &copy; Dulanjali - All Right Reserved.
-            </p>
+                NammaQA · Crafted by Wizzybox · © 2026            </p>
         </div>
     )
 }
